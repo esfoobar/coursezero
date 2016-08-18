@@ -17,11 +17,11 @@ gpgcheck=0 \n\
 enabled=1" >> /etc/yum.repos.d/mongodb-org-3.0.repo
 RUN yum install -y mongodb-org; yum clean all
 RUN easy_install pip
-RUN mkdir /opt/flaskbook
-WORKDIR /opt/flaskbook
-ADD requirements.txt /opt/flaskbook/
+RUN mkdir /opt/zerotribe
+WORKDIR /opt/zerotribe
+ADD requirements.txt /opt/zerotribe/
 RUN pip install -r requirements.txt
-ADD . /opt/flaskbook
+ADD . /opt/zerotribe
 
 # start the app server
 CMD python manage.py runserver

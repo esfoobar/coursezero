@@ -1,9 +1,9 @@
 SECRET_KEY = 'you-will-never-guess'
 DEBUG = True
 MONGODB_HOST = '' # use 'mongodb' if using Docker
-MONGODB_DB = 'flaskbook'
+MONGODB_DB = 'zerotribe'
 HOSTNAME = 'https://you.c9users.io'
-UPLOAD_FOLDER = '/opt/flaskbook/static/images'
+UPLOAD_FOLDER = '/opt/zerotribe/static/images'
 STATIC_IMAGE_URL = 'images'
 AWS_BUCKET = ''
 AWS_CONTENT_URL = ''

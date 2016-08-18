@@ -1,16 +1,8 @@
-[![Build Status](https://travis-ci.com/jorge-3/flaskbook.svg?token=CpgTPHGMFe4PoRnkeQqo&branch=master)](https://travis-ci.com/jorge-3/flaskbook)
+[![Build Status](https://travis-ci.com/jorge-3/zerotribe.svg?token=CpgTPHGMFe4PoRnkeQqo&branch=master)](https://travis-ci.com/jorge-3/zerotribe)
 
-# Step 32
+# Running the application
 
-## Resurface posts if liked/commented
-- Add a last updated field and update on that
-
-## Do a nicer home page
-- You know?
-
-## Docker configuration
-
-### Checkout code on /opt/flaskbook on local computer
+### Checkout code on /opt/zerotribe on local computer
 
 ### Build the containers
 ```docker-compose build```

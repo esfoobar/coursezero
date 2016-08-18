@@ -5,7 +5,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - /opt/flaskbook:/opt/flaskbook
+      - /opt/zerotribe:/opt/zerotribe
     links:
       - db:mongodb
   db:
