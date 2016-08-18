@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
-                <img alt="flaskbook logo" width="82" height="20" src="{{ url_for('static', filename='assets/flaskbook-logo-sm.png') }}">
+                <img alt="flaskbook logo" width="82" height="20" src="{{ url_for('static', filename='assets/fromzero-logo-nav.png') }}">
             </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -17,17 +17,17 @@
                         <li><a href="{{ url_for('user_app.edit') }}">Edit profile</a></li>
                         <li><a href="{{ url_for('user_app.change_password') }}">Change password</a></li>
                     </ul>
-                </li>                 
+                </li>
                 <li>
                     <a href="{{ url_for('user_app.logout') }}" class="navbar-link">Logout</a></p>
-                </li> 
+                </li>
                 {% else %}
                 <li>
                     <a href="{{ url_for('user_app.login') }}" class="navbar-link">Login</a></p>
-                </li>     
+                </li>
                 <li>
                     <a href="{{ url_for('user_app.register') }}" class="navbar-link">Register</a></p>
-                </li> 
+                </li>
                 {% endif %}
             </ul>
         </div>
