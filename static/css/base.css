@@ -2,6 +2,10 @@ body {
   background-color: #eee;
 }
 
+.home-row {
+  margin-bottom: 45px;
+}
+
 #friends-toolbar {
     height: 60px;
     margin-right: 5px;
