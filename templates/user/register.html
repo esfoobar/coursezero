@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Registration{% endblock %}
+{% block title %}Join{% endblock %}
 
 {% block content %}
 
@@ -10,7 +10,7 @@
 
   <div class="col-md-offset-3 col-md-6">
 
-    <h3>Registration</h3>
+    <h3>Join</h3>
 
     {% from "_formhelpers.html" import render_field %}
     <form method="POST" action="{{ url_for('.register')}}" role="form">
@@ -19,10 +19,10 @@
 
       {{ render_field(form.first_name, class='form-control') }}
       {{ render_field(form.last_name, class='form-control') }}
-      
+
       {{ render_field(form.username, class='form-control', placeholder="Only letters, numbers, dash and underscore") }}
       {{ render_field(form.email, class='form-control') }}
-      
+
       {{ render_field(form.password, class='form-control', placeholder="At least 4 characters") }}
       {{ render_field(form.confirm, class='form-control') }}
 
