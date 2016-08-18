@@ -27,11 +27,12 @@ def login():
 
     if form.validate_on_submit():
         user = User.objects.filter(
-            username=form.username.data,
+            email=form.email.data,
             ).first()
         if user:
             if bcrypt.hashpw(form.password.data, user.password) == user.password:
-                session['username'] = form.username.data
+                session['id'] = str(user.id)
+                session['first_name'] = user.first_name
                 if 'next' in session:
                     next = session.get('next')
                     session.pop('next')
@@ -52,9 +53,8 @@ def register():
         hashed_password = bcrypt.hashpw(form.password.data, salt)
         code = str(uuid.uuid4())
         user = User(
-            username=form.username.data,
-            password=hashed_password,
             email=form.email.data,
+            password=hashed_password,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             change_configuration={
@@ -74,23 +74,24 @@ def register():
 
 @user_app.route('/logout')
 def logout():
-    session.pop('username')
+    session.pop('id')
+    session.pop('first_name')
     return redirect(url_for('user_app.login'))
 
-@user_app.route('/<username>/friends/<int:friends_page>', endpoint='profile-friends-page')
-@user_app.route('/<username>/friends', endpoint='profile-friends')
-@user_app.route('/<username>')
-def profile(username, page=1):
+@user_app.route('/<id>/friends/<int:friends_page>', endpoint='profile-friends-page')
+@user_app.route('/<id>/friends', endpoint='profile-friends')
+@user_app.route('/<id>')
+def profile(id, page=1):
     logged_user = None
     rel = None
     friends_page = False
-    user = User.objects.filter(username=username).first()
+    user = User.objects.filter(id=id).first()
     profile_messages = []
 
     if user:
-        if session.get('username'):
+        if session.get('id'):
             logged_user = User.objects.filter(
-                username=session.get('username')
+                id=session.get('id')
                 ).first()
             rel = Relationship.get_relationship(logged_user, user)
 
@@ -135,7 +136,7 @@ def profile(username, page=1):
 def edit():
     error = None
     message = None
-    user = User.objects.filter(username=session.get('username')).first()
+    user = User.objects.filter(id=session.get('id')).first()
     if user:
         form = EditForm(obj=user)
 
@@ -148,13 +149,6 @@ def edit():
                 form.image.data.save(file_path)
                 image_ts = str(thumbnail_process(file_path, 'user', str(user.id)))
 
-            # check if new username
-            if user.username != form.username.data.lower():
-                if User.objects.filter(username=form.username.data.lower()).first():
-                    error = 'Username already exists'
-                else:
-                    session['username'] = form.username.data.lower()
-                    form.username.data = form.username.data.lower()
             # check if new email
             if user.email != form.email.data.lower():
                 if User.objects.filter(email=form.email.data.lower()).first():

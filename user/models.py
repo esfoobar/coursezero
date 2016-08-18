@@ -7,9 +7,8 @@ from utilities.common import utc_now_ts as now
 from settings import STATIC_IMAGE_URL, AWS_BUCKET, AWS_CONTENT_URL
 
 class User(db.Document):
-    username = db.StringField(db_field="u", required=True, unique=True)
-    password = db.StringField(db_field="p", required=True)
     email = db.EmailField(db_field="e", required=True, unique=True)
+    password = db.StringField(db_field="p", required=True)
     first_name = db.StringField(db_field="fn", max_length=50)
     last_name = db.StringField(db_field="ln", max_length=50)
     bio = db.StringField(db_field="bio", max_length=160)
@@ -20,9 +19,8 @@ class User(db.Document):
 
     @classmethod
     def pre_save(cls, sender, document, **kwargs):
-        document.username = document.username.lower()
         document.email = document.email.lower()
-        
+
     def profile_imgsrc(self, size):
         if self.profile_image:
             if AWS_BUCKET:
@@ -33,8 +31,7 @@ class User(db.Document):
             return url_for('static', filename=os.path.join(STATIC_IMAGE_URL, 'user', 'no-profile.%s.png' % (size)))
 
     meta = {
-        'indexes': ['username', 'email', '-created']
+        'indexes': ['email', '-created']
         }
-    
+
 signals.pre_save.connect(User.pre_save, sender=User)
-    
