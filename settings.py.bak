@@ -8,3 +8,5 @@ STATIC_IMAGE_URL = 'images'
 AWS_BUCKET = ''
 AWS_CONTENT_URL = ''
 AWS_SEND_EMAIL = False
+CDN_DOMAIN = ""
+CDN_DEBUG = True
