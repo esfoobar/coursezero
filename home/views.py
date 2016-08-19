@@ -28,3 +28,7 @@ def home():
 
     else:
         return render_template('home/home.html')
+
+@home_app.route('/about')
+def about():
+    return render_template('home/about.html')
