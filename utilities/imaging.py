@@ -99,6 +99,15 @@ def image_height_transform(file, content_type, content_id, height=200):
     return (image_id, img_width)
 
 
-def get_signed_url(video_id):
-
-    pass
+def get_signed_url(video_id, duration_in_minutes=1):
+    expires_in = int(duration_in_minutes * 60)
+    s3 = boto3.client('s3')
+    url = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'Bucket': 'zerotribe',
+            'Key': 'static/videos/' + str(video_id)
+        },
+        ExpiresIn=3600
+    )
+    return url
