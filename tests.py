@@ -6,7 +6,7 @@ import unittest
 
 from user.tests import UserTest
 from relationship.tests import RelationshipTest
-# from feed.tests import FeedTest
+from feed.tests import FeedTest
 
 if __name__ == '__main__':
     unittest.main()

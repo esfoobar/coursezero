@@ -18,7 +18,7 @@ feed_app = Blueprint('feed_app', __name__)
 def add_message():
     ref = request.referrer
     form = FeedPostForm()
-    
+
     if form.validate_on_submit():
         # process images
         post_images = []
@@ -29,16 +29,16 @@ def add_message():
                 file_path = os.path.join(UPLOAD_FOLDER, 'posts', filename)
                 file.save(file_path)
                 post_images.append(file_path)
-        
+
         # process post
-        from_user = User.objects.get(username=session.get('username'))
-        to_user = User.objects.get(username=request.values.get('to_user'))
+        from_user = User.objects.get(id=session.get('id'))
+        to_user = User.objects.get(id=request.values.get('to_user'))
         post = form.post.data
 
         # if this is a self post
         if to_user == from_user:
             to_user = None
-        
+
         # write the message
         message = Message(
             from_user=from_user,
@@ -46,13 +46,13 @@ def add_message():
             text=post,
             message_type=POST,
             ).save()
-            
+
         # store on same user's feed
         feed = Feed(
             user=from_user,
             message=message
             ).save()
-            
+
         # store images
         if len(post_images):
             images = []
@@ -61,15 +61,15 @@ def add_message():
                 images.append({"ts": str(image_ts), "w": str(width)})
             message.images = images
             message.save()
-            
+
         # process the message
         process_message(message)
-        
+
         if ref:
             return redirect(ref)
         else:
             return redirect(url_for('home_app.home'))
-            
+
     else:
         return 'Error!'
 
@@ -81,15 +81,15 @@ def message(message_id, feed_id=None):
     message = Message.objects.filter(id=message_id).first()
     if not message:
         abort(404)
-    
+
     if message and message.parent:
         abort(404)
 
-    if form.validate_on_submit() and session.get('username'):
+    if form.validate_on_submit() and session.get('id'):
         # process post
-        from_user = User.objects.get(username=session.get('username'))
+        from_user = User.objects.get(id=session.get('id'))
         post = form.post.data
-        
+
         # write the message
         comment = Message(
             from_user=from_user,
@@ -97,14 +97,14 @@ def message(message_id, feed_id=None):
             message_type=COMMENT,
             parent=message_id
             ).save()
-            
+
         return redirect(url_for('feed_app.message', message_id=message.id))
-            
-    return render_template('feed/message.html', 
+
+    return render_template('feed/message.html',
         message=message,
         form=form
         )
-        
+
 @feed_app.route('/like/<message_id>', methods=('GET', 'POST'))
 @login_required
 def like_message(message_id):
@@ -113,12 +113,12 @@ def like_message(message_id):
     message = Message.objects.filter(id=message_id).first()
     if not message:
         abort(404)
-    
+
     if message and message.parent:
         abort(404)
-        
-    from_user = User.objects.get(username=session.get('username'))
-    
+
+    from_user = User.objects.get(id=session.get('id'))
+
     #check if first like
     existing_like = Message.objects.filter(
         parent=message_id,
@@ -132,5 +132,5 @@ def like_message(message_id):
             message_type=LIKE,
             parent=message_id
             ).save()
-        
+
     return redirect(url_for('feed_app.message', message_id=message.id))
