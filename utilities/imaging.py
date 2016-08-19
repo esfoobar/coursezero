@@ -28,8 +28,8 @@ def thumbnail_process(file, content_type, content_id, sizes=[("sm", 50), ("lg", 
         s3 = boto3.client('s3')
         transfer = S3Transfer(s3)
         transfer.upload_file(
-            os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'raw')), 
-            AWS_BUCKET, 
+            os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'raw')),
+            AWS_BUCKET,
             os.path.join(content_type, filename_template % (image_id, 'raw')),
             extra_args={'ACL': 'public-read', 'ContentType': 'image/png'}
             )
@@ -37,8 +37,8 @@ def thumbnail_process(file, content_type, content_id, sizes=[("sm", 50), ("lg", 
 
         for (name, size) in sizes:
             transfer.upload_file(
-                os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, name)), 
-                AWS_BUCKET, 
+                os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, name)),
+                AWS_BUCKET,
                 os.path.join(content_type, filename_template % (image_id, name)),
                 extra_args={'ACL': 'public-read', 'ContentType': 'image/png'}
                 )
@@ -57,7 +57,7 @@ def crop_center(image):
         width=int(wh),
         height=int(wh)
     )
-    
+
 def image_height_transform(file, content_type, content_id, height=200):
     image_id = now_ms()()
     filename_template = content_id + '.%s.%s.png'
@@ -74,21 +74,21 @@ def image_height_transform(file, content_type, content_id, height=200):
         img.format = 'png'
         img.save(filename=os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'xlg')))
         img_width = img.width
-        
+
     if AWS_BUCKET:
         s3 = boto3.client('s3')
         transfer = S3Transfer(s3)
         transfer.upload_file(
-            os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'raw')), 
-            AWS_BUCKET, 
+            os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'raw')),
+            AWS_BUCKET,
             os.path.join(content_type, filename_template % (image_id, 'raw')),
             extra_args={'ACL': 'public-read', 'ContentType': 'image/png'}
             )
         os.remove(os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'raw')))
 
         transfer.upload_file(
-            os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'xlg')), 
-            AWS_BUCKET, 
+            os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'xlg')),
+            AWS_BUCKET,
             os.path.join(content_type, filename_template % (image_id, 'xlg')),
             extra_args={'ACL': 'public-read', 'ContentType': 'image/png'}
             )
@@ -97,3 +97,8 @@ def image_height_transform(file, content_type, content_id, height=200):
     os.remove(file)
 
     return (image_id, img_width)
+
+
+def get_signed_url(video_id):
+
+    pass
