@@ -6,6 +6,7 @@
 - Build the containers: ```docker-compose build```
 - Copy settings.py.bak to settings.py and add 'mongodb' as MONGODB_HOST
 - Start the application: ```docker-compose up```
+- Run ```bower install``` for JS dependencies
 
 # To access mongodb
 - Find the docker web container name and run: ```docker exec -it zerotribe_web_1 mongo --host mongodb```

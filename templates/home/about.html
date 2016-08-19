@@ -1,0 +1,33 @@
+
+{% extends "base.html" %}
+
+{% block title %}About Fromzero{% endblock %}
+
+{% block header %}<link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+
+{% include "navbar.html" %}
+
+<div class="row">
+
+  <div class="container">
+
+    <div class="col-md-offset-1 col-md-3">
+      <img class="img-rounded" src="{{ url_for('static', filename='assets/jorge-profile-2016.jpg') }}" width="100%" />
+    </div>
+
+    <div class="col-md-6" style="font-size: 1.25em">
+      <p><strong>Fromzero</strong> is an educational project created by <a href="http://jorge3.com">Jorge Escobar</a>, a technologist, entrepreneur and open source fanatic with more than 15 years of experience in the development of web applications in New York City.</p>
+
+      <p>Jorge has worked in well established companies like Yahoo!, Univision and MongoDB and has also been the technical founding member of various successful tech startups that have received multiple rounds of venture capital.</p>
+
+      <p><strong>The biggest problem Jorge has experienced during his career is finding well rounded developers</strong> and he interviewed hundreds of them for positions in the teams he was leading. A constant pattern (no matter if candidates came from a good university or had a few years of experience) was the lack of practical, real world knowledge.</p>
+
+      <p>That’s why Jorge created Fromzero, an educational project that would address those practical knowledge issues through training that builds hands-on experience and equip students with the tools required to be successful in today’s technology business needs.</p>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

@@ -7,7 +7,7 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
 
     {% block header %}{% endblock %}
 
@@ -28,10 +28,10 @@
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+    <script src="{{ url_for('static', filename='components/jquery/dist/jquery.min.js') }}"></script>
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     {% block end_body_js %}{% endblock %}
 

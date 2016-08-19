@@ -2,6 +2,14 @@
   margin-bottom: 45px;
 }
 
+#nav-join {
+    color: #eee;
+}
+
+#nav-join:hover{
+  color: #555;
+}
+
 #friends-toolbar {
     height: 60px;
     margin-right: 5px;
