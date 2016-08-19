@@ -7,14 +7,14 @@ from feed.forms import FeedPostForm
 home_app = Blueprint('home_app', __name__)
 
 @home_app.route('/')
-def home():  
-    if session.get('username'):
+def home():
+    if session.get('id'):
         form = FeedPostForm()
-        
+
         user = User.objects.filter(
-            username=session.get('username')
+            id=session.get('id')
             ).first()
-        
+
         # get user messages
         feed_messages = Feed.objects.filter(
             user=user
@@ -25,6 +25,6 @@ def home():
             form=form,
             feed_messages=feed_messages
         )
-        
+
     else:
         return render_template('home/home.html')
