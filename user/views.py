@@ -179,10 +179,10 @@ def edit():
     else:
         abort(404)
 
-@user_app.route('/confirm/<username>/<code>')
-def confirm(username, code):
+@user_app.route('/confirm/<id>/<code>')
+def confirm(id, code):
     edit_profile = False
-    user = User.objects.filter(username=username).first()
+    user = User.objects.filter(id=id).first()
     if user and user.change_configuration and user.change_configuration.get('confirmation_code'):
         if code == user.change_configuration.get('confirmation_code'):
             user.email = user.change_configuration.get('new_email')
@@ -213,13 +213,13 @@ def forgot():
         message = "You will receive a password reset email if we find that email in our system"
     return render_template('user/forgot.html', form=form, error=error, message=message)
 
-@user_app.route('/password_reset/<username>/<code>', methods=('GET','POST'))
-def password_reset(username, code):
+@user_app.route('/password_reset/<id>/<code>', methods=('GET','POST'))
+def password_reset(id, code):
     require_current = False
 
     form = PasswordResetForm()
 
-    user = User.objects.filter(username=username).first()
+    user = User.objects.filter(id=id).first()
     if not user or code != user.change_configuration.get('password_reset_code'):
         abort(404)
 
@@ -232,8 +232,9 @@ def password_reset(username, code):
             user.change_configuration = {}
             user.save()
             # if user is logged in, log him out
-            if session.get('username'):
-                session.pop('username')
+            if session.get('id'):
+                session.pop('id')
+                session.pop('first_name')
             return redirect(url_for('user_app.password_reset_complete'))
 
     return render_template('user/password_reset.html',
@@ -253,7 +254,7 @@ def change_password():
     error = None
     form = PasswordResetForm()
 
-    user = User.objects.filter(username=session.get('username')).first()
+    user = User.objects.filter(id=session.get('id')).first()
     if not user:
         abort(404)
 
@@ -265,8 +266,9 @@ def change_password():
                 user.password = hashed_password
                 user.save()
                 # if user is logged in, log him out
-                if session.get('username'):
-                    session.pop('username')
+                if session.get('id'):
+                    session.pop('id')
+                    session.pop('first_name')
                 return redirect(url_for('user_app.password_reset_complete'))
             else:
                 error = "Incorrect password"
