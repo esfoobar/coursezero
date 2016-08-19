@@ -7,5 +7,8 @@
 - Copy settings.py.bak to settings.py and add 'mongodb' as MONGODB_HOST
 - Start the application: ```docker-compose up```
 
+# To access mongodb
+- Find the docker web container name and run: ```docker exec -it zerotribe_web_1 mongo --host mongodb```
+
 # To run tests
 - Find the docker web container name and run: ```docker exec -it zerotribe_web_1  python tests.py```

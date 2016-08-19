@@ -7,20 +7,19 @@ from utilities.common import email
 
 relationship_app = Blueprint('relationship_app', __name__)
 
-@relationship_app.route('/add_friend/<to_username>')
+@relationship_app.route('/add_friend/<id>')
 @login_required
-def add_friend(to_username):
+def add_friend(id):
     ref = request.referrer
-    logged_user = User.objects.filter(username=session.get('username')).first()
-    to_user = User.objects.filter(username=to_username).first()
+    logged_user = User.objects.filter(id=session.get('id')).first()
+    to_user = User.objects.filter(id=id).first()
     if to_user:
         rel = Relationship.get_relationship(logged_user, to_user)
-        to_username = to_user.username
         if rel == "REVERSE_FRIENDS_PENDING":
             # Check if there's a pending invitation to_user -> from_user
             # so then we confirm the friendship
             Relationship(
-                from_user=logged_user, 
+                from_user=logged_user,
                 to_user=to_user,
                 rel_type=Relationship.FRIENDS,
                 status=Relationship.APPROVED
@@ -34,12 +33,12 @@ def add_friend(to_username):
         elif rel == None and rel != "REVERSE_BLOCKED":
             # Otherwise, just do the initial request
             Relationship(
-                from_user=logged_user, 
-                to_user=to_user, 
-                rel_type=Relationship.FRIENDS, 
+                from_user=logged_user,
+                to_user=to_user,
+                rel_type=Relationship.FRIENDS,
                 status=Relationship.PENDING
                 ).save()
-                
+
             # email the user
             body_html = render_template('mail/relationship/added_friend.html', from_user=logged_user, to_user=to_user)
             body_text = render_template('mail/relationship/added_friend.txt', from_user=logged_user, to_user=to_user)
@@ -47,16 +46,16 @@ def add_friend(to_username):
         if ref:
             return redirect(ref)
         else:
-            return redirect(url_for('user_app.profile', username=to_user.username))
+            return redirect(url_for('user_app.profile', id=to_user.id))
     else:
         abort(404)
-        
-@relationship_app.route('/remove_friend/<to_username>')
+
+@relationship_app.route('/remove_friend/<id>')
 @login_required
-def remove_friend(to_username):
+def remove_friend(id):
     ref = request.referrer
-    logged_user = User.objects.filter(username=session.get('username')).first()
-    to_user = User.objects.filter(username=to_username).first()
+    logged_user = User.objects.filter(id=session.get('id')).first()
+    to_user = User.objects.filter(id=id).first()
     if to_user:
         rel = Relationship.get_relationship(logged_user, to_user)
         if rel == "FRIENDS_PENDING" or rel == "FRIENDS_APPROVED" or rel == "REVERSE_FRIENDS_PENDING":
@@ -69,16 +68,16 @@ def remove_friend(to_username):
         if ref:
             return redirect(ref)
         else:
-            return redirect(url_for('user_app.profile', username=to_user.username))
+            return redirect(url_for('user_app.profile', id=to_user.id))
     else:
         abort(404)
-        
-@relationship_app.route('/block/<to_username>')
+
+@relationship_app.route('/block/<id>')
 @login_required
-def block(to_username):
+def block(id):
     ref = request.referrer
-    logged_user = User.objects.filter(username=session.get('username')).first()
-    to_user = User.objects.filter(username=to_username).first()
+    logged_user = User.objects.filter(id=session.get('id')).first()
+    to_user = User.objects.filter(id=id).first()
     if to_user:
         rel = Relationship.get_relationship(logged_user, to_user)
         if rel == "FRIENDS_PENDING" or rel == "FRIENDS_APPROVED" or rel == "REVERSE_FRIENDS_PENDING":
@@ -89,24 +88,24 @@ def block(to_username):
                 from_user=to_user,
                 to_user=logged_user).delete()
         Relationship(
-            from_user=logged_user, 
-            to_user=to_user, 
-            rel_type=Relationship.BLOCKED, 
+            from_user=logged_user,
+            to_user=to_user,
+            rel_type=Relationship.BLOCKED,
             status=Relationship.APPROVED
             ).save()
         if ref:
             return redirect(ref)
         else:
-            return redirect(url_for('user_app.profile', username=to_user.username))
+            return redirect(url_for('user_app.profile', id=to_user.id))
     else:
         abort(404)
-        
-@relationship_app.route('/unblock/<to_username>')
+
+@relationship_app.route('/unblock/<id>')
 @login_required
-def unblock(to_username):
+def unblock(id):
     ref = request.referrer
-    logged_user = User.objects.filter(username=session.get('username')).first()
-    to_user = User.objects.filter(username=to_username).first()
+    logged_user = User.objects.filter(id=session.get('id')).first()
+    to_user = User.objects.filter(id=id).first()
     if to_user:
         rel = Relationship.get_relationship(logged_user, to_user)
         if rel == "BLOCKED":
@@ -116,6 +115,6 @@ def unblock(to_username):
         if ref:
             return redirect(ref)
         else:
-            return redirect(url_for('user_app.profile', username=to_user.username))
+            return redirect(url_for('user_app.profile', id=to_user.id))
     else:
         abort(404)

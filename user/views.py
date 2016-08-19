@@ -45,8 +45,8 @@ def login():
             error = "Incorrect credentials"
     return render_template('user/login.html', form=form, error=error)
 
-@user_app.route('/register', methods=('GET', 'POST'))
-def register():
+@user_app.route('/join', methods=('GET', 'POST'))
+def join():
     form = RegisterForm()
     if form.validate_on_submit():
         salt = bcrypt.gensalt()
@@ -62,15 +62,16 @@ def register():
                 "confirmation_code": code
                 }
         )
-
-        # email the user
-        body_html = render_template('mail/user/register.html', user=user)
-        body_text = render_template('mail/user/register.txt', user=user)
-        email(user.email, "Welcome to Flaskbook", body_html, body_text)
         user.save()
 
+        if user:
+            # email the user
+            body_html = render_template('mail/user/register.html', user=user)
+            body_text = render_template('mail/user/register.txt', user=user)
+            email(user.email, "Welcome to Flaskbook", body_html, body_text)
+
         return redirect(url_for('user_app.login'))
-    return render_template('user/register.html', form=form)
+    return render_template('user/join.html', form=form)
 
 @user_app.route('/logout')
 def logout():

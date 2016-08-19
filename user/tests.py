@@ -34,9 +34,9 @@ class UserTest(unittest.TestCase):
                 confirm="test123"
                 )
 
-    def test_register_user(self):
+    def test_join_user(self):
         # basic registration
-        rv = self.app.post('/register', data=self.user_dict(),
+        rv = self.app.post('/join', data=self.user_dict(),
             follow_redirects=True)
         assert User.objects.filter(email=self.user_dict()['email']).count() == 1
 
@@ -56,7 +56,7 @@ class UserTest(unittest.TestCase):
 
     def test_login_user(self):
         # create a user
-        self.app.post('/register', data=self.user_dict())
+        self.app.post('/join', data=self.user_dict())
         # login the user
         rv = self.app.post('/login', data=dict(
             email=self.user_dict()['email'],
@@ -70,7 +70,7 @@ class UserTest(unittest.TestCase):
 
     def test_edit_profile(self):
         # create a user
-        self.app.post('/register', data=self.user_dict())
+        self.app.post('/join', data=self.user_dict())
 
         # confirm the user
         user = User.objects.get(email=self.user_dict()['email'])
@@ -116,7 +116,7 @@ class UserTest(unittest.TestCase):
         assert db_user.change_configuration == {}
 
         # create a second user
-        self.app.post('/register', data=self.user_dict())
+        self.app.post('/join', data=self.user_dict())
         # login the user
         rv = self.app.post('/login', data=dict(
             email=self.user_dict()['email'],
@@ -131,7 +131,7 @@ class UserTest(unittest.TestCase):
 
     def test_get_profile(self):
         # create a user
-        self.app.post('/register', data=self.user_dict())
+        self.app.post('/join', data=self.user_dict())
 
         # get the user's profile
         db_user = User.objects.filter().first()
@@ -140,7 +140,7 @@ class UserTest(unittest.TestCase):
 
     def test_forgot_password(self):
         # create a user
-        self.app.post('/register', data=self.user_dict())
+        self.app.post('/join', data=self.user_dict())
 
         # confirm the user
         user = User.objects.get(email=self.user_dict()['email'])
@@ -177,7 +177,7 @@ class UserTest(unittest.TestCase):
 
     def test_change_password(self):
         # create a user
-        self.app.post('/register', data=self.user_dict())
+        self.app.post('/join', data=self.user_dict())
 
         # confirm the user
         user = User.objects.get(email=self.user_dict()['email'])
@@ -203,6 +203,7 @@ class UserTest(unittest.TestCase):
             email=self.user_dict()['email'],
             password='newpassword'
             ))
+
         # check the session is set
         with self.app as c:
             rv = c.get('/')
