@@ -86,7 +86,7 @@ def logout():
 def profile(id, page=1):
     # is id a valid ObjectId
     if not bson.objectid.ObjectId.is_valid(id):
-        return None
+        abort(404)
 
     logged_user = None
     rel = None

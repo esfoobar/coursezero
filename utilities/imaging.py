@@ -110,5 +110,4 @@ def get_signed_url(video_id, duration_in_minutes=1):
         },
         ExpiresIn=expires_in
     )
-    print(url)
     return url
