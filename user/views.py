@@ -4,6 +4,7 @@ import uuid
 import os
 from werkzeug import secure_filename
 from mongoengine import Q
+import bson
 
 from user.models import User
 from user.forms import RegisterForm, LoginForm, EditForm, ForgotForm, PasswordResetForm
@@ -83,6 +84,10 @@ def logout():
 @user_app.route('/<id>/friends', endpoint='profile-friends')
 @user_app.route('/<id>')
 def profile(id, page=1):
+    # is id a valid ObjectId
+    if not bson.objectid.ObjectId.is_valid(id):
+        return None
+
     logged_user = None
     rel = None
     friends_page = False

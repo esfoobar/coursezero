@@ -108,6 +108,7 @@ def get_signed_url(video_id, duration_in_minutes=1):
             'Bucket': 'zerotribe',
             'Key': 'static/videos/' + str(video_id)
         },
-        ExpiresIn=3600
+        ExpiresIn=expires_in
     )
+    print(url)
     return url
