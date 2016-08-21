@@ -4,6 +4,8 @@ from user.models import User
 class Transaction(db.Document):
     payment_id = db.StringField(db_field="pi") # whatever id I get from BT
     coupon = db.ReferenceField(Coupon, db_field="c")
+    price_dollars = db.IntField(db_field="pd")
+    price_cents = db.IntField(db_field="pc")    
 
 PERCENT = 1
 AMOUNT = 2

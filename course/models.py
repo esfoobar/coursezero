@@ -14,7 +14,7 @@ class Course(db.Document):
     price_dollars = db.IntField(db_field="pd")
     price_cents = db.IntField(db_field="pc")
     goals = db.StringField(db_field="d")
-    requirements = db.StringField(db_field="r")
+    requirements = db.ListField(db_field="r")
     image = db.StringField(db_field="i", default=None)
     live = db.BooleanField(db_field="l", default=True)
 
