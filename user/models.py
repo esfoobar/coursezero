@@ -16,6 +16,7 @@ class User(db.Document):
     email_confirmed = db.BooleanField(db_field="ecf", default=False)
     change_configuration = db.DictField(db_field="cc")
     profile_image = db.StringField(db_field="i", default=None)
+    is_admin = db.BooleanField(db="ia", default=False)
 
     @classmethod
     def pre_save(cls, sender, document, **kwargs):
