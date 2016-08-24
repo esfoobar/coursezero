@@ -12,6 +12,7 @@ class Track(db.Document):
 class Course(db.Document):
     track = db.ReferenceField(Track, db_field="tr", reverse_delete_rule=CASCADE)
     title = db.StringField(db_field="t")
+    slug = db.StringField(db_field="sl")
     subtitle = db.StringField(db_field="st")
     section_list = db.ListField(db_field="cl") # objects with section id and position
     categories = db.StringField(db_field="c")

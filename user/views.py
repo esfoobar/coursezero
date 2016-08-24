@@ -34,6 +34,7 @@ def login():
             if bcrypt.hashpw(form.password.data, user.password) == user.password:
                 session['id'] = str(user.id)
                 session['first_name'] = user.first_name
+                session['is_admin'] = user.is_admin
                 if 'next' in session:
                     next = session.get('next')
                     session.pop('next')
@@ -78,6 +79,7 @@ def join():
 def logout():
     session.pop('id')
     session.pop('first_name')
+    session.pop('is_admin')
     return redirect(url_for('user_app.login'))
 
 @user_app.route('/<id>/friends/<int:friends_page>', endpoint='profile-friends-page')
@@ -241,6 +243,7 @@ def password_reset(id, code):
             if session.get('id'):
                 session.pop('id')
                 session.pop('first_name')
+                session.pop('is_admin')
             return redirect(url_for('user_app.password_reset_complete'))
 
     return render_template('user/password_reset.html',
@@ -275,6 +278,7 @@ def change_password():
                 if session.get('id'):
                     session.pop('id')
                     session.pop('first_name')
+                    sessio.pop('is_admin')
                 return redirect(url_for('user_app.password_reset_complete'))
             else:
                 error = "Incorrect password"
