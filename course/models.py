@@ -1,6 +1,6 @@
 from application import db
 from user.models import User
-from transaction.models import Transaction
+from transaction.models import Transaction, Subscription
 
 class Track(db.Document):
     title = db.StringField(db_field="t")
@@ -16,10 +16,10 @@ class Course(db.Document):
     section_list = db.ListField(db_field="cl") # objects with section id and position
     categories = db.StringField(db_field="c")
     summary = db.StringField(db_field="s")
-    price_dollars = db.IntField(db_field="pd")
-    price_cents = db.IntField(db_field="pc")
     goals = db.StringField(db_field="d")
     requirements = db.ListField(db_field="r")
+    price_dollars = db.IntField(db_field="pd")
+    price_cents = db.IntField(db_field="pc")
     image = db.StringField(db_field="i", default=None)
     live = db.BooleanField(db_field="l", default=True)
 
@@ -52,6 +52,8 @@ class Enrollment(db.Document):
     user = db.ReferenceField(User, db_field="u", reverse_delete_rule=CASCADE)
     coupon_code = db.StringField(db_field="cc")
     transaction = db.ReferenceField(Transaction, db_field="t")
+    subscription = db.ReferenceField(Subscription, db_field="s")
+    live = db.BooleanField(db_field="l", default=True)
 
 class Progress(db.Document):
     course = db.ReferenceField(Course, db_field="c", reverse_delete_rule=CASCADE)
