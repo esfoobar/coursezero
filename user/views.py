@@ -278,7 +278,7 @@ def change_password():
                 if session.get('id'):
                     session.pop('id')
                     session.pop('first_name')
-                    sessio.pop('is_admin')
+                    session.pop('is_admin')
                 return redirect(url_for('user_app.password_reset_complete'))
             else:
                 error = "Incorrect password"

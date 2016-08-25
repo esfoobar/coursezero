@@ -2,9 +2,10 @@ from wand.image import Image
 import os
 import boto3
 from boto3.s3.transfer import S3Transfer
+from flask import url_for
 
 from utilities.common import utc_now_ts as now, utc_now_ts_ms as now_ms
-from settings import UPLOAD_FOLDER, AWS_BUCKET
+from settings import UPLOAD_FOLDER, AWS_BUCKET, STATIC_IMAGE_URL
 
 def thumbnail_process(file, content_type, content_id, sizes=[("sm", 50), ("lg", 75), ("xlg", 200)]):
     image_id = now()
@@ -100,14 +101,17 @@ def image_height_transform(file, content_type, content_id, height=200):
 
 
 def get_signed_url(video_id, duration_in_minutes=1):
-    expires_in = int(duration_in_minutes * 60)
-    s3 = boto3.client('s3')
-    url = s3.generate_presigned_url(
-        ClientMethod='get_object',
-        Params={
-            'Bucket': 'zerotribe',
-            'Key': 'static/videos/' + str(video_id)
-        },
-        ExpiresIn=expires_in
-    )
-    return url
+    if AWS_BUCKET:
+        expires_in = int(duration_in_minutes * 60)
+        s3 = boto3.client('s3')
+        url = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': 'zerotribe',
+                'Key': 'static/videos/' + str(video_id)
+            },
+            ExpiresIn=expires_in
+        )
+        return url
+    else:
+        return url_for('static', filename=os.path.join('videos', video_id))
