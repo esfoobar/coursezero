@@ -1,6 +1,7 @@
 from flask import Flask
 from flask.ext.mongoengine import MongoEngine
 from flask.ext.cdn import CDN
+from flaskext.markdown import Markdown
 
 db = MongoEngine()
 cdn = CDN()
@@ -19,6 +20,9 @@ def create_app(**config_overrides):
 
     # setup CDN
     cdn.init_app(app)
+
+    # setup markdown
+    Markdown(app)
 
     # import blueprints
     from user.views import user_app

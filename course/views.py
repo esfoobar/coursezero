@@ -13,10 +13,12 @@ def home():
 @course_app.route('/admin/courses', methods=('GET', 'POST'))
 @admin_required
 def admin():
-    return render_template('course/admin.html')
+    mkd = "```markdown```"
+    return render_template('course/admin.html', mkd=mkd)
 
 @course_app.route('/admin/courses/new', methods=('GET', 'POST'))
 @admin_required
 def admin_new():
     form = CourseForm()
+    # form = EditForm(obj=user)
     return render_template('course/admin_new.html', form=form)

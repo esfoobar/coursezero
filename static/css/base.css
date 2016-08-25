@@ -4,6 +4,9 @@
 
 #nav-join {
     color: #eee;
+    padding-top: 3px!important;
+    padding-bottom: 3px!important;
+    margin-top: 12px;
 }
 
 #nav-join:hover{
