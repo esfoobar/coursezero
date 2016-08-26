@@ -1,3 +1,5 @@
+from mongoengine import CASCADE
+
 from application import db
 from user.models import User
 from transaction.models import Transaction, Subscription
@@ -12,15 +14,14 @@ class Track(db.Document):
 class Course(db.Document):
     track = db.ReferenceField(Track, db_field="tr", reverse_delete_rule=CASCADE)
     title = db.StringField(db_field="t")
-    slug = db.StringField(db_field="sl")
+    slug = db.StringField(db_field="sl", unique=True)
     subtitle = db.StringField(db_field="st")
     section_list = db.ListField(db_field="cl") # objects with section id and position
     categories = db.StringField(db_field="c")
     summary = db.StringField(db_field="s")
     goals = db.StringField(db_field="d")
-    requirements = db.ListField(db_field="r")
-    price_dollars = db.IntField(db_field="pd")
-    price_cents = db.IntField(db_field="pc")
+    prereqs = db.ListField(db_field="r")
+    price = db.IntField(db_field="pd")
     image = db.StringField(db_field="i", default=None)
     live = db.BooleanField(db_field="l", default=True)
 
@@ -44,7 +45,7 @@ class Lesson(db.Document):
     course = db.ReferenceField(Course, db_field="c", reverse_delete_rule=CASCADE)
     section = db.ReferenceField(Section, db_field="s", reverse_delete_rule=CASCADE)
     title = db.StringField(db_field="t")
-    summary = db.StringField(db_field="s")
+    summary = db.StringField(db_field="sm")
     preview_enabled = db.BooleanField(db_field="pe", default=False)
     video_file_path = db.StringField(db_field="v")
 
@@ -60,3 +61,4 @@ class Progress(db.Document):
     course = db.ReferenceField(Course, db_field="c", reverse_delete_rule=CASCADE)
     user = db.ReferenceField(User, db_field="u", reverse_delete_rule=CASCADE)
     lesson = db.ReferenceField(Lesson, db_field="l", reverse_delete_rule=CASCADE)
+    started = db.DateTimeField(db_field="s")

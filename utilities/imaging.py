@@ -7,21 +7,25 @@ from flask import url_for
 from utilities.common import utc_now_ts as now, utc_now_ts_ms as now_ms
 from settings import UPLOAD_FOLDER, AWS_BUCKET, STATIC_IMAGE_URL
 
-def thumbnail_process(file, content_type, content_id, sizes=[("sm", 50), ("lg", 75), ("xlg", 200)]):
+def thumbnail_process(file, content_type, content_id, sizes=[("sm", 50), ("lg", 75), ("xlg", 200)], square=True):
     image_id = now()
     filename_template = content_id + '.%s.%s.png'
 
     # original
     with Image(filename=file) as img:
-        crop_center(img)
+        if square:
+            crop_center(img)
         img.format = 'png'
         img.save(filename=os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, 'raw')))
 
     # sizes
     for (name, size) in sizes:
         with Image(filename=file) as img:
-            crop_center(img)
-            img.sample(size, size)
+            if square:
+                crop_center(img)
+                img.sample(size, size)
+            else:
+                img.transform(resize='x' + str(size))
             img.format = 'png'
             img.save(filename=os.path.join(UPLOAD_FOLDER, content_type, filename_template % (image_id, name)))
 

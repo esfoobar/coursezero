@@ -8,5 +8,6 @@ services:
       - /opt/zerotribe:/opt/zerotribe
     links:
       - db:mongodb
+    container_name: zerotribe_web_1
   db:
     image: mongo:3.0.2
