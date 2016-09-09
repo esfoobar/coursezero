@@ -19,4 +19,4 @@ aws_secret_access_key = xxx
 - Find the docker web container name and run: ```docker exec -it zerotribe_web_1 mongo --host mongodb```
 
 # To run tests
-- Find the docker web container name and run: ```docker exec -it zerotribe_web_1 python tests.py```
+- Find the docker web container name and run: ```docker exec -it zerotribe_web_1 python3 tests.py```
